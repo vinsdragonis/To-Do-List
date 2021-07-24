@@ -2,50 +2,87 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const date = require(__dirname + "/date.js");
 
 const app = express();
-
-let workList = [];
-let tasks = [];
 
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-app.get("/", function(req, res){
-  const day = date.getDate();
+mongoose.connect("mongodb://localhost:27017/todoListDB", {useNewUrlParser: true});
 
-  res.render('list', {listTitle: day, newListItems: tasks});
+const itemsSchema = {
+  name: String
+};
+
+const Item = mongoose.model ("Item", itemsSchema);
+
+const study = new Item({
+  name: "Study"
 });
 
-app.post("/", function(req, res) {
-  const task = req.body.newTask;
-
-  if (req.body.list === "Work") {
-    workList.push(task);
-    res.redirect("/work");
-  } else {
-    tasks.push(task)
-    res.redirect("/");
-  }
+const play = new Item({
+  name: "Play video games"
 });
 
-app.get("/work", function(req, res) {
-  res.render("list", {listTitle: "Work List", newListItems: workList});
+const defaultItems = [study, play];
+
+
+
+app.get("/", function(req, res) {
+  Item.find({}, function(err, foundItems) {
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundItems.length === 0) {
+        Item.insertMany(defaultItems, function(err) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Successfully added items!");
+          }
+          res.redirect("/");
+        });
+      } else {
+        res.render("list", {listTitle: "Today", newListItems: foundItems});
+      }
+    }
+  });
 });
 
-app.post("/work", function(req, res) {
-  const task = req.body.newTask;
-  workList.push(task);
-  res.redirect("/work");
+app.post("/", function(req, res){
+  const itemName = req.body.newItem;
+
+  const item = new Item({
+    name: itemName
+  });
+
+  item.save();
+  res.redirect("/");
 });
 
-app.get("/about", function(req, res) {
+app.post("/delete", function(req, res) {
+  const checkedItemId = req.body.checkbox;
+
+  Item.findByIdAndRemove(checkedItemId, function(err) {
+    if (!err) {
+      console.log("Successfully completed task");
+      res.redirect("/");
+    }
+  });
+});
+
+app.get("/work", function(req,res){
+  res.render("list", {listTitle: "Work List", newListItems: workItems});
+});
+
+app.get("/about", function(req, res){
   res.render("about");
 });
 
-app.listen(3000, function(){
-  console.log("Server started on port 3000.");
+app.listen(3000, function() {
+  console.log("Server started on port 3000");
 });
