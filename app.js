@@ -38,7 +38,7 @@ app.get("/work", function(req, res) {
 
 app.post("/work", function(req, res) {
   const task = req.body.newTask;
-  workList.push(task)
+  workList.push(task);
   res.redirect("/work");
 });
 
