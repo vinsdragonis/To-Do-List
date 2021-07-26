@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 mongoose.set('useFindAndModify', false);
-mongoose.connect("mongodb://localhost:27017/todoListDB", {useNewUrlParser: true}, { useFindAndModify: false }, { useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://admin:acnologia28@cluster0.htysj.mongodb.net/todoListDB?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true }, { useFindAndModify: false });
 
 const itemsSchema = {
   name: String
@@ -124,6 +124,6 @@ app.get("/about", function(req, res){
   res.render("about");
 });
 
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
-});
+// Uncomment the line below only if you plan to use localhost connection
+
+app.listen(3000, '0.0.0.0');
