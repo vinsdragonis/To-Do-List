@@ -126,4 +126,10 @@ app.get("/about", function(req, res){
 
 // Uncomment the line below only if you plan to use localhost connection
 
-app.listen(3000, '0.0.0.0');
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+app.listen(port, () => {
+  console.log("Listening on port " + port);
+});
