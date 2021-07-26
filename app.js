@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 mongoose.set('useFindAndModify', false);
-mongoose.connect("mongodb+srv://admin:acnologia28@cluster0.htysj.mongodb.net/todoListDB?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true }, { useFindAndModify: false });
+mongoose.connect("mongodb+srv://guest:guest12321@cluster0.moo5s.mongodb.net/todoListDB?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true }, { useFindAndModify: false });
 
 const itemsSchema = {
   name: String
