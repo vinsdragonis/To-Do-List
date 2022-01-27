@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
+require("dotenv").config();
 
 const app = express();
 
@@ -12,8 +13,8 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.set('useFindAndModify', false);
-mongoose.connect("mongodb+srv://guest:guest12321@cluster0.moo5s.mongodb.net/todoListDB?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true }, { useFindAndModify: false });
+// mongoose.set('useFindAndModify', false);
+mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true }, { useFindAndModify: false });
 
 const itemsSchema = {
   name: String
