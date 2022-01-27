@@ -1,0 +1,18 @@
+{
+  "name": "todolist-v1",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "vinsdragonis <zrexteam128@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/vinsdragonis/To-Do-List",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
